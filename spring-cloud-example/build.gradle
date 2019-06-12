@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':member')
+    compile project(':work')
+    compile project(':eureka-server')
+	compile project(':zuul')
+}

@@ -1,0 +1,49 @@
+# port 선언 (http://localhost:8081 로써 서버에 올라감)
+server:
+  port: 8081
+
+# 해당 프로젝트 명칭 선언
+spring:
+  application:
+    name: member
+    
+# hystrix
+hystrix:
+  command:
+    workInfo:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 # 타임아웃 시간 조정 : 1000 -> 3000 (1초 -> 3초)
+      circuitBreaker: # circuitBreaker
+        requestVolumeThreshold: 1
+        errorThresholdPercentage: 50
+        sleepWindowInMilliseconds: 5000 # 한번 Circuit이 오픈되면 5초간 호출 차단 -> 5초 경과후 단 1개 호출 허용 (Half-Open) -> 성공시 Circuit을 다시 CLOSE, 여전히 실패시 Open을 5초 연장
+    FeignWorkRemoteService#getWorkInfo(String):
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 # 타임아웃 시간 : 3000
+      circuitBreaker: # circuitBreaker
+        requestVolumeThreshold: 1
+        errorThresholdPercentage: 50
+        
+# ribbon
+work:
+  ribbon:
+    #listOfServers: localhost:8082, localhost:7777
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 1
+
+# eureka-client
+eureka:
+  instance:
+    prefer-ip-address: true #OS에서 제공하는 hostname대신 자신의 ip address를 사용
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+      
+# feign
+feign:
+  hystrix:
+    enabled: true
