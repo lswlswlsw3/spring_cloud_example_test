@@ -7,4 +7,5 @@ dependencies {
     compile project(':work')
     compile project(':eureka-server')
 	compile project(':zuul')
+	compile project(':demo')
 }
